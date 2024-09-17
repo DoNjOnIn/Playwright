@@ -1,16 +1,15 @@
 const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pages/loginpage');
 
 test('Login', async ({ page }) => {
-    await page.goto('https://demoqa.com/login');
-  
-    await page.getByPlaceholder('UserName').fill('qwer');
-    await page.fill('#password','!QAZ2wsx');
-    await page.click('#login');
+
+    const loginpage = new LoginPage(page);
     
-    await page.waitForSelector('#submit')
-    const logoutbutton = await page.getByRole('button',{name: 'Log out'})
-    await expect(logoutbutton).toBeVisible();
-    
+    await loginpage.goto();
+    await loginpage.successfulLogin();
+    await loginpage.logOut();
+    await loginpage.failedLogin();
+
     await page.close();
   });
 
